@@ -38,6 +38,12 @@
             android:exported="false"
             android:screenOrientation="behind" >
         </activity>
+        <activity
+            android:name="com.alipay.sdk.pay.demo.NewPayDemoActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" >
+        </activity>
     </application>
 
 </manifest>

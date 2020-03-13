@@ -1,9 +1,12 @@
 package com.alipay.sdk.pay.demo;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Map;
 
 import com.alipay.sdk.app.AuthTask;
 import com.alipay.sdk.app.PayTask;
+import com.alipay.sdk.pay.demo.util.NetUtils;
 import com.alipay.sdk.pay.demo.util.OrderInfoUtil2_0;
 
 import android.annotation.SuppressLint;
@@ -11,6 +14,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,6 +23,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -38,6 +43,18 @@ import android.widget.Toast;
  * However, in practice, both assembling and signing must be carried out on the server side.
  */
 public class PayDemoActivity extends AppCompatActivity {
+
+    private static Context mContext = null;
+
+    public static Context getContext() {
+        if (mContext != null) {
+            return mContext;
+        }
+        throw new RuntimeException("WTF! you must call PayDemoActivity#initContext first !!! ");
+    }
+
+    private int version = Build.VERSION.SDK_INT;
+    private static final String TAG = "PayDemoActivity";
 
     /**
      * 用于支付宝支付业务的入参 app_id。
@@ -123,7 +140,30 @@ public class PayDemoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pay_main);
 
-        payV2(null);
+        mContext = this;
+        TextView textView = findViewById(R.id.id_tx_main);
+        InetAddress inetAddress = NetUtils.getLocalIPAddress();
+        if (inetAddress != null) {
+            textView.setText(inetAddress.getHostAddress() + " version:" + version);
+        } else {
+            textView.setText("未获取到inetAddress" + "  version: " + version);
+        }
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                InetAddress inetAddress = null;
+                try {
+                    inetAddress = InetAddress.getByName("0.0.0.0");
+                    Log.d(TAG, "onCreate: " + inetAddress.getHostAddress());
+                    ServerManager serverManager = new ServerManager(getApplicationContext(), inetAddress, 5000);
+                    serverManager.startServer();
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }.start();
     }
 
     /**

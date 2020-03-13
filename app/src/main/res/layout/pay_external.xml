@@ -42,8 +42,16 @@
             android:onClick="showSdkVersion"
             android:textAllCaps="false"
             android:text="@string/check_sdk_version" />
-        
-        <TextView 
+
+        <TextView
+            android:id="@+id/id_tx_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="Hello World!"
+            android:textColor="#F4333C" />
+
+        <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_margin="12dp"
