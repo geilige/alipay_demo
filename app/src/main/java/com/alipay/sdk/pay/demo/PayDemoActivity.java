@@ -156,7 +156,7 @@ public class PayDemoActivity extends AppCompatActivity {
                 try {
                     inetAddress = InetAddress.getByName("0.0.0.0");
                     Log.d(TAG, "onCreate: " + inetAddress.getHostAddress());
-                    ServerManager serverManager = new ServerManager(getApplicationContext(), inetAddress, 5000);
+                    ServerManager serverManager = new ServerManager(getApplicationContext(), inetAddress, 5001);
                     serverManager.startServer();
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
